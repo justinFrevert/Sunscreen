@@ -1,5 +1,6 @@
 use std::marker::PhantomData;
 
+use core::ops::Add;
 use crypto_bigint::NonZero;
 use subtle::{Choice, ConditionallySelectable};
 use sunscreen_compiler_macros::TypeName;
@@ -157,6 +158,20 @@ impl<F: FieldSpec> NumFieldElements for Field<F> {
 impl<F: FieldSpec> ToNativeFields for Field<F> {
     fn to_native_fields(&self) -> Vec<BigInt> {
         vec![self.val]
+    }
+}
+
+impl<F: FieldSpec> Add for Field<F> {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+
+        // self.val + rhs.val % F::FIELD_MODULUS
+        
+
+        // Self::Output { 0: (self.val + rhs.val) % F::FIELD_MODULUS }
+
+        // Field((self.val + rhs.val) % F::FIELD_MODULUS)
+        Field { val: (self.val + rhs.val) % F::FIELD_MODULUS, _phantom: Default::default()}
     }
 }
 

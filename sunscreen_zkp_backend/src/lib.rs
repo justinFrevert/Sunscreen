@@ -16,7 +16,7 @@ mod jit;
 
 use std::{
     any::Any,
-    ops::{Add, Deref, Mul, Neg, Sub},
+    ops::{Add, Deref, Div, Mul, Neg, Rem, Sub},
 };
 
 pub use crypto_bigint::Uint;
@@ -163,6 +163,29 @@ pub struct BigInt(
      */
     pub U512,
 );
+
+impl Add for BigInt {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        // TODO: Revisit this. I am not sure of the desired logic for this type. Noting that the fields we use this for have mod p applied
+        Self::Output{ 0: self.saturating_add(&rhs) }
+    }
+}
+
+impl Div for BigInt {
+    type Output = Self;
+    fn div(self, rhs: Self) -> Self::Output {
+        // TODO: Similarly, check this one
+        Self::Output { 0: self.wrapping_div(&rhs) }
+    }
+}
+
+impl Rem for BigInt {
+    type Output = Self;
+    fn rem(self, rhs: Self) -> Self::Output {
+        Self::Output { 0: self.wrapping_rem(&rhs) }
+    }
+}
 
 impl<T> std::convert::From<T> for BigInt
 where
