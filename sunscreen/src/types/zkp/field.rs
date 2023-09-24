@@ -164,13 +164,6 @@ impl<F: FieldSpec> ToNativeFields for Field<F> {
 impl<F: FieldSpec> Add for Field<F> {
     type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
-
-        // self.val + rhs.val % F::FIELD_MODULUS
-        
-
-        // Self::Output { 0: (self.val + rhs.val) % F::FIELD_MODULUS }
-
-        // Field((self.val + rhs.val) % F::FIELD_MODULUS)
         Field { val: (self.val + rhs.val) % F::FIELD_MODULUS, _phantom: Default::default()}
     }
 }
